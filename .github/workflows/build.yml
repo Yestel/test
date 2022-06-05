@@ -32,17 +32,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
+      - name: Build and push repo
+        uses: dacbd/gcr-build-push@main
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: quandaohong/test:latest
+          tags: latest
+          project-id: ${{ secrets.GCP_PROJECT_ID }}
+          GCR-key: ${{ secrets.GCP_GCR_KEY }}
