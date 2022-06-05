@@ -19,30 +19,17 @@ on:
 
 jobs:
   deploy:
-    name: Deploy head of main to prod
+    name: Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud
+      - uses: actions/checkout@v1
+      - uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{secrets.GCP_PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{secrets.GCP_GCR_KEY}}
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_GCR_KEY }}
-          export_default_credentials: true
-
-      # - name: Use gcloud CLI to deploy the workflow
-      #     run: gcloud info
-
-      - name: Deploy workflow
-        uses: UriKatsirPrivate/deploy-workflow
-        with:
-          project-id: ${{ secrets.GCP_PROJECT_ID }}
-          workflow-name: deploy
-          workflow-definition-file-name: deployment.yaml
-          service-account-name: 639306307744-compute@developer.gserviceaccount.com
-          workflow-region: us-central1
+          args: app deploy deployment.yaml
 
       # - id: "auth"
       #   name: "Authenticate to Google Cloud"
