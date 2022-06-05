@@ -38,3 +38,22 @@ jobs:
           tags: latest
           project-id: ${{ secrets.GCP_PROJECT_ID }}
           GCR-key: ${{ secrets.GCP_GCR_KEY }}
+
+  deploy:
+    name: Deploy head of main to prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get GKE credentials
+        uses: google-github-actions/get-gke-credentials@main
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
+          location: ${{ secrets.GKE_CLUSTER_LOCATION }}
+          credentials: ${{ secrets.GCP_GCR_KEY }}
+
+      - uses: firehed/deploy-to-kubernetes@v1
+        with:
+          namespace: github-actions
+          deployment: www
+          container: server
+          image: gcr.io/rocket-346418/test:${{ github.sha }}
+          token: ${{ secrets.GITHUB_TOKEN }}
