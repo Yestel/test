@@ -23,18 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v0'
-        with:
-          credentials_json: '${{ secrets.GCP_GCR_KEY }}'
-
-      - name: 'Set up Cloud SDK 1'
-        uses: 'google-github-actions/setup-gcloud@v0'
-
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
-
-      - name: Set up Cloud SDK 2
+      - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
@@ -50,7 +39,7 @@ jobs:
               project-id: ${{ secrets.GCP_PROJECT_ID }}
               workflow-name: deploy
               workflow-definition-file-name: deployment.yaml
-              service-account-name: Compute Engine default service account
+              service-account-name: 639306307744-compute@developer.gserviceaccount.com
               workflow-region: us-central1
 
       # - id: "auth"
