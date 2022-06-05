@@ -23,7 +23,7 @@ env:
   GKE_CLUSTER: rocket-push # TODO: update to cluster name
   GKE_ZONE: us-central1 # TODO: update to cluster zone
   DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
-  REPOSITORY: https://hub.docker.com/repository/docker/quandaohong/test # TODO: update to Artifact Registry docker repository
+  REPOSITORY: https://hub.docker.com/repository/docker/quandaohong # TODO: update to Artifact Registry docker repository
   IMAGE: test
 
 jobs:
