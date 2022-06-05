@@ -18,8 +18,10 @@ on:
       - "master"
 
 jobs:
-  name: deploy
-  runs-on: ubuntu-latest
+  deploy:
+    name: Deploy head of main to prod
+    runs-on: ubuntu-latest
+
     steps:
       - uses: "actions/checkout@v3"
 
