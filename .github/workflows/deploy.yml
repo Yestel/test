@@ -26,7 +26,7 @@ jobs:
       - uses: danielr1996/kubectl-action@1.0.0
         name: Deploy
         with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+          kubeconfig: ${{ secrets.KUBE_CODE }}
           args: apply -f deployment.yaml
 
       # - id: "auth"
