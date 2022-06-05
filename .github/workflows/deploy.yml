@@ -23,9 +23,6 @@ jobs:
 
   steps:
     - uses: "actions/checkout@v3"
-    - uses: "azure/setup-kubectl@v2.0"
-      with:
-        version: "v1.24.1"
     - id: "auth"
       name: "Authenticate to Google Cloud"
       uses: "google-github-actions/auth@v0"
