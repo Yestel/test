@@ -27,7 +27,7 @@ jobs:
           cat ${HOME}/.kube/config
 
       - name: Use context
-        run: kubectl config use-context rocket-push
+        run: kubectl config use-context gke_rocket-346418_us-central1_rocket-push
 
       - name: Deploy to K8s
         run: kubectl apply -f deployment.yaml
