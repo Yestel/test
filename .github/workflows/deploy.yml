@@ -26,6 +26,11 @@ jobs:
           echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
           cat ${HOME}/.kube/config
 
+      - name: Use context
+        run: kubectl config use-context rocket-push
+
+      - name: Deploy to K8s
+        run: kubectl apply -f deployment.yaml
       # - uses: azure/setup-kubectl@v2.0
       #   with:
       #     version: "v1.24.1" # default is latest stable
