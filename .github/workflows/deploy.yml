@@ -16,7 +16,7 @@ jobs:
 
       - name: test
         run: |
-          sed -i -e 's/test:lastest/test:${{ github.sha }}/g' deployment.yaml
+          sed -i 's/test:latest/test:${{ github.sha }}/g' deployment.yaml
           cat deployment.yaml
 
       # - id: "auth"
@@ -42,7 +42,7 @@ jobs:
       # - name: "test"
       #   run: |
       #     gcloud container clusters get-credentials rocket-push --region us-central1 --project rocket-346418
-      #     sed -i -e 's/test:lastest/test:${{ github.sha }}/g' ./deployment.yaml
+      #     sed -i -e 's/test:latest/test:${{ github.sha }}/g' ./deployment.yaml
       #     kubectl apply -f deployment.yaml
 
       # - name: Get Config
