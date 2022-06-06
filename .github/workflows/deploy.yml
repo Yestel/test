@@ -36,7 +36,7 @@ jobs:
         run: kubectl config use-context gke_rocket-346418_us-central1_rocket-push
 
       - name: Deploy to K8s
-        run: kubectl apply -f deployment.yaml
+        run: kubectl get pods
 
       # - uses: azure/k8s-set-context@v2
       #   with:
