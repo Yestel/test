@@ -26,11 +26,11 @@ jobs:
       #     docker build -t gcr.io/rocket-346418/test:${{ github.sha }} .
       #     docker push gcr.io/rocket-346418/test:${{ github.sha }}
 
-      - name: Get Config
-        run: |
-          mkdir ${HOME}/.kube
-          echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
-          cat ${HOME}/.kube/config
+      # - name: Get Config
+      #   run: |
+      #     mkdir ${HOME}/.kube
+      #     echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+      #     cat ${HOME}/.kube/config
 
       - uses: danielr1996/kubectl-action@1.0.0
         name: Deploy
