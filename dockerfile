@@ -8,12 +8,14 @@ WORKDIR /
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install
+RUN npm install && npm i -g typescript
 # If you are building your code for production
 # RUN npm ci --only=production
 
 # Bundle app source
 COPY . .
+
+RUN tsc -p .
 
 EXPOSE 8081
 

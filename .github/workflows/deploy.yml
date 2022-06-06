@@ -17,7 +17,7 @@ jobs:
       - id: "auth"
         uses: "google-github-actions/auth@v0"
         with:
-          credentials_json: "${{ secrets.GCP_GCR_KEY }}"
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
 
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v0"
@@ -27,17 +27,17 @@ jobs:
         with:
           registry: gcr.io
           username: _json_key
-          password: ${{ secrets.GCP_GCR_KEY }}
+          password: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: Build and push
         run: |
-          docker build -t gcr.io/rocket-346418/test:${{ github.sha }} .
-          docker push gcr.io/rocket-346418/test:${{ github.sha }}
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_IMAGE_LABEL }}:${{ github.sha }} .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_IMAGE_LABEL }}:${{ github.sha }}
 
       - name: "deploy"
         run: |
-          gcloud container clusters get-credentials rocket-push --region us-central1 --project rocket-346418
-          sed -i 's/test:latest/test:${{ github.sha }}/g' deployment.yaml
+          gcloud container clusters get-credentials ${{ secrets.GCP_CLUSTER_NAME }} --region ${{ secrets.GCP_PROJECT_ZONE }} --project ${{ secrets.GCP_PROJECT_ID }}
+          sed -i 's/${{ secrets.GCP_IMAGE_LABEL }}:latest/${{ secrets.GCP_IMAGE_LABEL }}:${{ github.sha }}/g' deployment.yaml
           kubectl apply -f deployment.yaml
 
       # - name: Get Config
