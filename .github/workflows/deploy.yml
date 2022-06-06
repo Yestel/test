@@ -14,15 +14,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: azure/k8s-set-context@v2
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
-        id: login
+      # - uses: azure/k8s-set-context@v2
+      #   with:
+      #     method: kubeconfig
+      #     kubeconfig: ${{ secrets.KUBE_CONFIG }}
+      #   id: login
 
       - name: test
         run: |
-          kubectl get pods
+          mkdir ${HOME}/.kube
+          echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+          cat ${HOME}/.kube/config
 
       # - uses: azure/setup-kubectl@v2.0
       #   with:
