@@ -33,7 +33,9 @@ jobs:
           cat ${HOME}/.kube/config
 
       - name: Use context
-        run: kubectl config use-context gke_rocket-346418_us-central1_rocket-push
+        run: |
+          kubectl config use-context gke_rocket-346418_us-central1_rocket-push
+          kubectl config view
 
       - name: Deploy to K8s
         run: kubectl get pods
