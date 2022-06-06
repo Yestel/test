@@ -14,36 +14,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: test
+      - id: "auth"
+        uses: "google-github-actions/auth@v0"
+        with:
+          credentials_json: "${{ secrets.GCP_GCR_KEY }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v0"
+
+      - name: Login to GCR
+        uses: docker/login-action@v2
+        with:
+          registry: gcr.io
+          username: _json_key
+          password: ${{ secrets.GCP_GCR_KEY }}
+
+      - name: Build and push
         run: |
+          docker build -t gcr.io/rocket-346418/test:${{ github.sha }} .
+          docker push gcr.io/rocket-346418/test:${{ github.sha }}
+
+      - name: "deploy"
+        run: |
+          gcloud container clusters get-credentials rocket-push --region us-central1 --project rocket-346418
           sed -i 's/test:latest/test:${{ github.sha }}/g' deployment.yaml
-          cat deployment.yaml
-
-      # - id: "auth"
-      #   uses: "google-github-actions/auth@v0"
-      #   with:
-      #     credentials_json: "${{ secrets.GCP_GCR_KEY }}"
-
-      # - name: "Set up Cloud SDK"
-      #   uses: "google-github-actions/setup-gcloud@v0"
-
-      # - name: Login to GCR
-      #   uses: docker/login-action@v2
-      #   with:
-      #     registry: gcr.io
-      #     username: _json_key
-      #     password: ${{ secrets.GCP_GCR_KEY }}
-
-      # - name: Build and push
-      #   run: |
-      #     docker build -t gcr.io/rocket-346418/test:${{ github.sha }} .
-      #     docker push gcr.io/rocket-346418/test:${{ github.sha }}
-
-      # - name: "test"
-      #   run: |
-      #     gcloud container clusters get-credentials rocket-push --region us-central1 --project rocket-346418
-      #     sed -i -e 's/test:latest/test:${{ github.sha }}/g' ./deployment.yaml
-      #     kubectl apply -f deployment.yaml
+          kubectl apply -f deployment.yaml
 
       # - name: Get Config
       #   run: |
