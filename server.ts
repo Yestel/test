@@ -3,7 +3,7 @@ import express from "express"
 const app = express()
 
 dotenv.config()
-const port = process.env.PORT || 8081
+const port = process.env.PORT
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
