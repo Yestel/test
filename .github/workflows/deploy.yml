@@ -22,7 +22,7 @@ jobs:
 
       - name: test
         run: |
-          kuberctl get pods
+          kubectl get pods
 
       # - uses: azure/setup-kubectl@v2.0
       #   with:
