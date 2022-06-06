@@ -42,7 +42,7 @@ jobs:
         run: |
           docker build -t gcr.io/rocket-346418/test:${{ github.sha }} .
           docker push gcr.io/rocket-346418/test:${{ github.sha }}
-          kuberctl apply -f deplyment.yaml
+          kuberctl apply -f deployment.yaml
 
       # - id: "auth"
       #   name: "Authenticate to Google Cloud"
