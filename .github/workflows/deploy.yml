@@ -34,23 +34,9 @@ jobs:
           password: ${{ secrets.GCP_GCR_KEY }}
 
       - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: gcr.io/rocket-346418/test:latest
-
-      - name: deploy to cluster
-        uses: steebchen/kubectl@v2.0.0
-        with: # defaults to latest kubectl binary version
-          config: ${{ secrets.KUBE_CONFIG }}
-          command: set image --record deployment/my-app container=${{ github.repository }}:${{ github.sha }}
-
-      - name: verify deployment
-        uses: steebchen/kubectl@v2.0.0
-        with:
-          config: ${{ secrets.KUBE_CONFIG }}
-          version: v1.21.0 # specify kubectl binary version explicitly
-          command: rollout status deployment/my-app
+        run: |
+          docker build -t gcr.io/rocket-346418/test:${{ github.sha }} .
+          docker push gcr.io/rocket-346418/test:${{ github.sha }}
 
       # - id: "auth"
       #   name: "Authenticate to Google Cloud"

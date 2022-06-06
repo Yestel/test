@@ -17,43 +17,43 @@ on:
     branches:
       - "master"
 
-env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
-  GKE_CLUSTER: cluster-1 # TODO: update to cluster name
-  GKE_ZONE: us-central1-c # TODO: update to cluster zone
-  DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
-  REPOSITORY: samples # TODO: update to Artifact Registry docker repository
-  IMAGE: static-site
-
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Build and push repo
-        uses: dacbd/gcr-build-push@main
-        with:
-          tags: latest
-          project-id: ${{ secrets.GCP_PROJECT_ID }}
-          GCR-key: ${{ secrets.GCP_GCR_KEY }}
-
   deploy:
-    name: Deploy head of main to prod
+    name: Deploy
     runs-on: ubuntu-latest
-    steps:
-      - name: Get GKE credentials
-        uses: google-github-actions/get-gke-credentials@main
-        with:
-          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
-          location: ${{ secrets.GKE_CLUSTER_LOCATION }}
-          credentials: ${{ secrets.GCP_GCR_KEY }}
 
-      - uses: firehed/deploy-to-kubernetes@v1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to GCR
+        uses: docker/login-action@v2
         with:
-          namespace: github-actions
-          deployment: www
-          container: server
-          image: gcr.io/rocket-346418/test:${{ github.sha }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          registry: gcr.io
+          username: _json_key
+          password: ${{ secrets.GCP_GCR_KEY }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: gcr.io/rocket-346418/test:latest
+
+      - name: deploy to cluster
+        uses: steebchen/kubectl@v2.0.0
+        with: # defaults to latest kubectl binary version
+          config: ${{ secrets.KUBE_CONFIG }}
+          command: set image --record deployment/my-app container=${{ github.repository }}:${{ github.sha }}
+
+      - name: verify deployment
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          config: ${{ secrets.KUBE_CONFIG }}
+          version: v1.21.0 # specify kubectl binary version explicitly
+          command: rollout status deployment/my-app
+
+      # - id: "auth"
+      #   name: "Authenticate to Google Cloud"
+      #   uses: "google-github-actions/auth@v0"
+      #   with:
+      #     credentials_json: "${{ secrets.GCP_GCR_KEY }}"
