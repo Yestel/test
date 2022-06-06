@@ -42,6 +42,7 @@ jobs:
         run: |
           docker build -t gcr.io/rocket-346418/test:${{ github.sha }} .
           docker push gcr.io/rocket-346418/test:${{ github.sha }}
+          sed -i '' -e 's/gcr.io\/rocket-346418\/test:lastest gcr.io\/rocket-346418\/test:${{ github.sha }}/g' deployment.yaml
           kuberctl apply -f deployment.yaml
 
       # - id: "auth"
