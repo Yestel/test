@@ -22,7 +22,7 @@ jobs:
 
       - name: test
         run: |
-          echo kuberctl get pods
+          kuberctl get pods
 
       # - uses: azure/setup-kubectl@v2.0
       #   with:
@@ -40,6 +40,7 @@ jobs:
       #   with:
       #     method: kubeconfig
       #     kubeconfig: ${{ secrets.KUBE_CONFIG }}
+      #   id: login
 
       # - name: Build and push
       #   run: |
