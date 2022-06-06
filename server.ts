@@ -12,6 +12,8 @@ app.get("/", (req: express.Request, res: express.Response) => {
 	res.send("Hello World 1")
 })
 
+console.log(process.env.MY_ENV_VAR)
+
 app.listen(port, function () {
 	console.log(`Node server running @ http://localhost:${port}`)
 })
