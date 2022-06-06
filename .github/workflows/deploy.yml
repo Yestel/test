@@ -16,7 +16,7 @@ jobs:
 
       - name: test
         run: |
-          sed -i -e 's/test:lastest/test:${{ github.sha }}/g' ./deployment.yaml
+          sed -i -e 's/test:lastest/test:${{ github.sha }}/g' deployment.yaml
           cat deployment.yaml
 
       # - id: "auth"
