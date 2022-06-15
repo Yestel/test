@@ -2,23 +2,23 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "rocket-push-1"
+  name: "test"
   namespace: "default"
   labels:
-    app: "rocket-push-1"
+    app: "test"
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: "rocket-push-1"
+      app: "test"
   template:
     metadata:
       labels:
-        app: "rocket-push-1"
+        app: "test"
     spec:
       containers:
-        - name: "rocket-push-1"
+        - name: "test"
           image: "gcr.io/rocket-346418/test:latest"
           ports:
             - containerPort: 8081
-              name: "rocket-push-1"
+              name: "test"

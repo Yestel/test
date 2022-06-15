@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.get("/", (req: express.Request, res: express.Response) => {
-	res.send("Hello World, my secret is " + process.env.SECRET)
+	res.send("Hello World changed, my secret is " + process.env.SECRET)
 })
 
 console.log(process.env.MY_ENV_VAR)
