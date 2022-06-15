@@ -14,6 +14,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: set environment variables for deployment
+        uses: allenevans/set-env@v2.0.0
+        with:
+          GCP_PROJECT_ID: rocket-346418
+          GCP_IMAGE_LABEL: test
+          GCP_CLUSTER_NAME: rocket-push
+
       - name: Add environments variables to .env file
         run: |
           echo "PORT=8081" >> .env
@@ -28,5 +35,5 @@ jobs:
 
       - name: Build and push
         run: |
-          docker build -t gcr.io/${{ config.GCP_PROJECT_ID }}/${{ config.GCP_IMAGE_LABEL }}:${{ github.sha }} .
-          docker push gcr.io/${{ config.GCP_PROJECT_ID }}/${{ config.GCP_IMAGE_LABEL }}:${{ github.sha }}
+          docker build -t gcr.io/${GCP_PROJECT_ID}/${GCP_IMAGE_LABEL}:${{ github.sha }} .
+          docker push gcr.io/${GCP_PROJECT_ID}/${GCP_IMAGE_LABEL}:${{ github.sha }}
