@@ -1,10 +1,5 @@
 node_modules
-build
-default FE for reference
-public
 npm-debug.log
 yarn.lock
-.husky
-.github
-.vscode
-src
+.github/
+.vscode/
