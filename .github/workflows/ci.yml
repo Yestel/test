@@ -22,35 +22,35 @@ jobs:
           GCP_CLUSTER_NAME: test
           GCP_REGION: us-east1
 
-      - name: Add environments variables to .env file
-        run: |
-          echo "PORT=8081" >> .env
-          echo "SECRET=1234" >> .env
+      # - name: Add environments variables to .env file
+      #   run: |
+      #     echo "PORT=8081" >> .env
+      #     echo "SECRET=1234" >> .env
 
-      - id: auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+      # - id: auth
+      #   uses: google-github-actions/auth@v0
+      #   with:
+      #     credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+      # - name: Set up Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v0
 
-      - name: Login to GCR
-        uses: docker/login-action@v2
-        with:
-          registry: gcr.io
-          username: _json_key
-          password: ${{ secrets.GCP_CREDENTIALS }}
+      # - name: Login to GCR
+      #   uses: docker/login-action@v2
+      #   with:
+      #     registry: gcr.io
+      #     username: _json_key
+      #     password: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Build and push
-        run: |
-          docker build -t gcr.io/${GCP_PROJECT_ID}/${GCP_IMAGE_LABEL}:${{ github.sha }} .
-          docker push gcr.io/${GCP_PROJECT_ID}/${GCP_IMAGE_LABEL}:${{ github.sha }}
+      # - name: Build and push
+      #   run: |
+      #     docker build -t gcr.io/${GCP_PROJECT_ID}/${GCP_IMAGE_LABEL}:${{ github.sha }} .
+      #     docker push gcr.io/${GCP_PROJECT_ID}/${GCP_IMAGE_LABEL}:${{ github.sha }}
 
       - name: deploy
         run: |
-          gcloud container clusters get-credentials ${GCP_CLUSTER_NAME} --region ${GCP_REGION} --project ${GCP_PROJECT_ID}
-          sed -i 's/${GCP_IMAGE_LABEL}:latest/${GCP_IMAGE_LABEL}:${{ github.sha }}/g' ./gcp/deployment.yaml
+          # gcloud container clusters get-credentials ${GCP_CLUSTER_NAME} --region ${GCP_REGION} --project ${GCP_PROJECT_ID}
+          sed -i 's/test:latest/test:${{ github.sha }}/g' ./gcp/deployment.yaml
           cat ./gcp/deployment.yaml
-          kubectl apply -f ./gcp/deployment.yaml
-          kubectl apply -f ./gcp/service.yaml
+          # kubectl apply -f ./gcp/deployment.yaml
+          # kubectl apply -f ./gcp/service.yaml
