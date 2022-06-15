@@ -50,7 +50,8 @@ jobs:
       - name: deploy
         run: |
           # gcloud container clusters get-credentials ${GCP_CLUSTER_NAME} --region ${GCP_REGION} --project ${GCP_PROJECT_ID}
-          sed -i 's/${{GCP_IMAGE_LABEL}}:latest/${{GCP_IMAGE_LABEL}}:${{ github.sha }}/g' ./gcp/deployment.yaml
+          echo ${GCP_IMAGE_LABEL}
+          sed -i 's/${GCP_IMAGE_LABEL}:latest/${GCP_IMAGE_LABEL}:${{ github.sha }}/g' ./gcp/deployment.yaml
           cat ./gcp/deployment.yaml
           # kubectl apply -f ./gcp/deployment.yaml
           # kubectl apply -f ./gcp/service.yaml
