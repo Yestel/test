@@ -1,0 +1,10 @@
+projectId: rocket-346418
+app_name: test
+image_label: test
+service_name: test-service
+ingress_name: test-ingress
+cert_name: test-cert
+domain: test.ml
+replicas: 2
+target_port: 8081
+image_tag: latest
